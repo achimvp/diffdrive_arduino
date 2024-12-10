@@ -16,6 +16,8 @@ struct Config
   int enc_counts_per_rev_right = 6533;
   // int enc_counts_per_rev_left = 7200;
   // int enc_counts_per_rev_right = 7200;
+  std::string camera_base_name = "camera_tower_mobile_joint";
+  std::string camera_camera_name = "camera_joint";
 };
 
 
