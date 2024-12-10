@@ -42,6 +42,16 @@ void ArduinoComms::setMotorValues(int val_1, int val_2)
     sendMsg(ss.str(), false);
 }
 
+void ArduinoComms::setServoValues(int pos_array[])
+{
+    for (size_t i = 0; i < 2; i++)
+    {
+        std::stringstream ss;
+        ss << "s " << i << " " << pos_array[i] << "\r";
+        sendMsg(ss.str(), false);
+    }
+}
+
 void ArduinoComms::setPidValues(float k_p, float k_d, float k_i, float k_o)
 {
     std::stringstream ss;

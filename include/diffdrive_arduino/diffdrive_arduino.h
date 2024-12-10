@@ -11,6 +11,7 @@
 #include "rclcpp_lifecycle/state.hpp"
 
 #include "config.h"
+#include "camera_turret.h"
 #include "wheel.h"
 #include "arduino_comms.h"
 
@@ -48,6 +49,8 @@ private:
 
   Wheel l_wheel_;
   Wheel r_wheel_;
+
+  CameraTurret cam_turret_;
 
   rclcpp::Logger logger_;
 

@@ -30,9 +30,15 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_init(const hardware_inte
   cfg_.enc_counts_per_rev_left = std::stoi(info_.hardware_parameters["enc_counts_per_rev_left"]);
   cfg_.enc_counts_per_rev_right = std::stoi(info_.hardware_parameters["enc_counts_per_rev_right"]);
 
+  cfg_.camera_base_name = info_.hardware_parameters["camera_base_name"];
+  cfg_.camera_camera_name = info_.hardware_parameters["camera_camera_name"];
+
   // Set up the wheels
   l_wheel_.setup(cfg_.left_wheel_name, cfg_.enc_counts_per_rev_left);
   r_wheel_.setup(cfg_.right_wheel_name, cfg_.enc_counts_per_rev_right);
+
+  // Set up the camera turret
+  cam_turret_.setup(cfg_.camera_base_name, cfg_.camera_camera_name);
 
   // Set up the Arduino
   arduino_.setup(cfg_.device, cfg_.baud_rate, cfg_.timeout);  
@@ -64,6 +70,8 @@ std::vector<hardware_interface::CommandInterface> DiffDriveArduino::export_comma
 
   command_interfaces.emplace_back(hardware_interface::CommandInterface(l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &l_wheel_.cmd));
   command_interfaces.emplace_back(hardware_interface::CommandInterface(r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &r_wheel_.cmd));
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(cam_turret_.base_name, hardware_interface::HW_IF_POSITION, &cam_turret_.cmd[0]));
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(cam_turret_.camera_name, hardware_interface::HW_IF_POSITION, &cam_turret_.cmd[1]));
 
   return command_interfaces;
 }
@@ -133,6 +141,7 @@ hardware_interface::return_type DiffDriveArduino::write(
   }
 
   arduino_.setMotorValues(l_wheel_.cmd / l_wheel_.rads_per_count / cfg_.loop_rate, r_wheel_.cmd / r_wheel_.rads_per_count / cfg_.loop_rate);
+  arduino_.setServoValues(cam_turret_.cmd);
 
 
 
