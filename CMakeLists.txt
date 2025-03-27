@@ -23,7 +23,7 @@ find_package(pluginlib REQUIRED)
 
 
 
-add_library(diffdrive_arduino SHARED src/diffdrive_arduino.cpp src/wheel.cpp src/arduino_comms.cpp)
+add_library(diffdrive_arduino SHARED src/diffdrive_arduino.cpp src/wheel.cpp src/arduino_comms.cpp src/camera_turret.cpp)
 
 target_include_directories(
   diffdrive_arduino

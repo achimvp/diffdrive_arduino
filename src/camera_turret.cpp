@@ -9,6 +9,6 @@ CameraTurret::CameraTurret(const std::string &base_name, const std::string &came
 
 void CameraTurret::setup(const std::string &base_name, const std::string &camera_name)
 {
-  base_name = base_name;
-  camera_name = camera_name;
+  this->base_name = base_name;
+  this->camera_name = camera_name;
 }
