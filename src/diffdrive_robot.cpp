@@ -17,6 +17,8 @@ int main(int argc, char **argv)
   n.getParam("enc_counts_per_rev_left", robot_cfg.enc_counts_per_rev_left);
   n.getParam("enc_counts_per_rev_right", robot_cfg.enc_counts_per_rev_right);
   n.getParam("robot_loop_rate", robot_cfg.loop_rate);
+  n.getParam("camera_base_name", robot_cfg.camera_base_name);
+  n.getParam("camera_camera_name", robot_cfg.camera_camera_name);
   
 
   DiffDriveArduino robot(robot_cfg);
