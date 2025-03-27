@@ -11,8 +11,8 @@ class CameraTurret
 
     std::string base_name = "";
     std::string camera_name = "";
-    int cmd[] = {0,0};
-    int pos[] = {0,0};
+    double cmd[] = {0,0};
+    double pos[] = {0,0};
     double vel = 0;
     double eff = 0;
     double velSetPt = 0;

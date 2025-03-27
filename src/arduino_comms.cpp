@@ -42,7 +42,7 @@ void ArduinoComms::setMotorValues(int val_1, int val_2)
     sendMsg(ss.str(), false);
 }
 
-void ArduinoComms::setServoValues(int pos_array[])
+void ArduinoComms::setServoValues(double pos_array[])
 {
     for (size_t i = 0; i < 2; i++)
     {
