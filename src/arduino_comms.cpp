@@ -35,6 +35,46 @@ void ArduinoComms::readEncoderValues(int &val_1, int &val_2)
     val_2 = std::atoi(token_2.c_str());
 }
 
+void ArduinoComms::readIMUValues(double &accX, double &accY, double &accZ, double &gyroX, double &gyroY, double &gyroZ)
+{
+    std::string response = sendMsg("i\r");
+
+    std::string delimiter = " ";
+    size_t del_pos = response.find(delimiter);
+    std::string token_1 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_2 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_3 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_4 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_5 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_6 = response.substr(0, del_pos);
+    response = response.substr(del_pos + delimiter.length());
+
+    del_pos = response.find(delimiter);
+    std::string token_7 = response.substr(0, del_pos);
+
+    accX = std::atof(token_1.c_str());
+    accY = std::atof(token_2.c_str());
+    accZ = std::atof(token_3.c_str());
+    gyroX = std::atof(token_4.c_str());
+    gyroY = std::atof(token_5.c_str());
+    gyroZ = std::atof(token_6.c_str());
+}
+
 void ArduinoComms::setMotorValues(int val_1, int val_2)
 {
     std::stringstream ss;

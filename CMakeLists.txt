@@ -15,6 +15,7 @@ find_package(ament_cmake REQUIRED)
 find_package(serial REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(controller_manager REQUIRED)
+find_package(semantic_components REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(pluginlib REQUIRED)
 
@@ -34,6 +35,7 @@ ament_target_dependencies(
   diffdrive_arduino
   hardware_interface
   controller_manager
+  semantic_components
   serial
   rclcpp
   pluginlib
@@ -85,6 +87,7 @@ ament_export_libraries(
 ament_export_dependencies(
   hardware_interface
   controller_manager
+  semantic_components
   serial
   rclcpp
   pluginlib

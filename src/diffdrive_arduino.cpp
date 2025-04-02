@@ -33,12 +33,17 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_init(const hardware_inte
   cfg_.camera_base_name = info_.hardware_parameters["camera_base_name"];
   cfg_.camera_camera_name = info_.hardware_parameters["camera_camera_name"];
 
+  cfg_.imu_name = info_.hardware_parameters["imu_name"];
+
   // Set up the wheels
   l_wheel_.setup(cfg_.left_wheel_name, cfg_.enc_counts_per_rev_left);
   r_wheel_.setup(cfg_.right_wheel_name, cfg_.enc_counts_per_rev_right);
 
   // Set up the camera turret
   cam_turret_.setup(cfg_.camera_base_name, cfg_.camera_camera_name);
+
+  // Set up the IMU
+  imu_sensor_.setup(cfg_.imu_name);
 
   // Set up the Arduino
   arduino_.setup(cfg_.device, cfg_.baud_rate, cfg_.timeout);  
@@ -60,6 +65,10 @@ std::vector<hardware_interface::StateInterface> DiffDriveArduino::export_state_i
   state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name, hardware_interface::HW_IF_POSITION, &r_wheel_.pos));
   state_interfaces.emplace_back(hardware_interface::StateInterface(cam_turret_.base_name, hardware_interface::HW_IF_POSITION, &cam_turret_.pos[0]));
   state_interfaces.emplace_back(hardware_interface::StateInterface(cam_turret_.camera_name, hardware_interface::HW_IF_POSITION, &cam_turret_.pos[1]));
+
+  // Add IMU state interfaces
+  auto imu_state_interfaces = imu_.export_state_interfaces();
+  state_interfaces.insert(state_interfaces.end(), imu_state_interfaces.begin(), imu_state_interfaces.end());
 
   return state_interfaces;
 }
@@ -116,8 +125,10 @@ hardware_interface::return_type DiffDriveArduino::read(
     return return_type::ERROR;
   }
 
-  arduino_.readEncoderValues(l_wheel_.enc, r_wheel_.enc);
 
+  // Read encoder values
+  arduino_.readEncoderValues(l_wheel_.enc, r_wheel_.enc);
+  
   double pos_prev = l_wheel_.pos;
   l_wheel_.pos = l_wheel_.calcEncAngle();
   l_wheel_.vel = (l_wheel_.pos - pos_prev) / deltaSeconds;
@@ -126,6 +137,13 @@ hardware_interface::return_type DiffDriveArduino::read(
   r_wheel_.pos = r_wheel_.calcEncAngle();
   r_wheel_.vel = (r_wheel_.pos - pos_prev) / deltaSeconds;
 
+  // Read IMU values
+  double accX, accY, accZ, gyroX, gyroY, gyroZ; 
+  arduino_.readIMUValues(accX, accY, accZ, gyroX, gyroY, gyroZ);
+  imu_sensor_.set_linear_acceleration(accX, accY, accZ);
+  imu_sensor_.set_angular_velocity(gyroX, gyroY, gyroZ);
+  imu_sensor_.set_orientation(0, 0, 0); // TODO: Set orientation from IMU if available
+  imu_sensor_.set_acceleration(0, 0, 0); // TODO: Set acceleration from IMU if available
 
 
   return return_type::OK;

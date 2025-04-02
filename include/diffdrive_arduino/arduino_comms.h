@@ -20,11 +20,10 @@ public:
   void setup(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms);
   void sendEmptyMsg();
   void readEncoderValues(int &val_1, int &val_2);
+  void readIMUValues(double &accX, double &accY, double &accZ, double &gyroX, double &gyroY, double &gyroZ);
   void setMotorValues(int val_1, int val_2);
   void setPidValues(float k_p, float k_d, float k_i, float k_o);
   void setServoValues(double pos_array[]);
-  // void readIMUValues(int &val_1, int &val_2);
-  // void readServoValues(int &val_1, int &val_2);
 
   bool connected() const { return serial_conn_.isOpen(); }
 

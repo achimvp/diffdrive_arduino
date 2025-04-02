@@ -19,6 +19,7 @@ int main(int argc, char **argv)
   n.getParam("robot_loop_rate", robot_cfg.loop_rate);
   n.getParam("camera_base_name", robot_cfg.camera_base_name);
   n.getParam("camera_camera_name", robot_cfg.camera_camera_name);
+  n.getParam("imu_name", robot_cfg.imu_name);
   
 
   DiffDriveArduino robot(robot_cfg);
